@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { VictoryChart, VictoryLine, VictoryVoronoiContainer, VictoryLabel, VictoryTooltip, VictoryVoronoi, VictoryScatter } from 'victory';
+import { VictoryChart, VictoryLine, VictoryTooltip, VictoryScatter } from 'victory';
 
-function Hourly({hourlyInfo}) {
+function Hourly({hourlyInfo, unitSystem}) {
 
-  const [chartData, setChartData] = useState([]);
-  const [hourInfo, setHourInfo] = useState({});
+  const [chartData, setChartData] = useState({});
 
   useEffect(() => {
     updateData();
@@ -14,35 +13,56 @@ function Hourly({hourlyInfo}) {
     if (hourlyInfo == undefined) {
       return
     }
-    const tempData = []
+    
+    const dataC = []
+    const dataF = []
 
     for (let i = 0; i < 24; i++) {
-      tempData.push({
+      dataC.push({
         x: i,
-        y: hourlyInfo[i].temp_c
+        y: hourlyInfo[i].temp_c,
+        label: `Time: ${i}:00\nTemp: ${hourlyInfo[i].temp_c}\n${hourlyInfo[i].condition.text}`
+      });
+
+      dataF.push({
+        x: i,
+        y: hourlyInfo[i].temp_f,
+        label: `Time: ${i}:00\nTemp: ${hourlyInfo[i].temp_f}\n${hourlyInfo[i].condition.text}`
       });
     }
-    console.log(tempData);
-    setChartData(tempData);
+    setChartData({
+      "metric": dataC,
+      "imperial": dataF
+    });
   }
 
   return (
     <>
-      <VictoryChart 
-        domainPadding={{ y: 40 }}
-      >
-        <VictoryLine
-          data={chartData}
-        />
-        <VictoryScatter data={chartData}
-          size={5}
-          style={{ data: { fill: "#c43a31" } }}
-          labels={({ datum }) => `${datum.x}, ${datum.y}`}
-            labelComponent={
-              <VictoryTooltip  dy={-7} constrainToVisibleArea />
-            }
-        />
-      </VictoryChart>
+      <div className="graph">
+        {chartData && unitSystem &&
+          <VictoryChart 
+            domainPadding={{ y: 10 }}
+          >
+
+            <VictoryLine
+              data={chartData[unitSystem]}
+              labels={() => {}}
+              labelComponent={<VictoryTooltip/>}
+            />
+
+            <VictoryScatter 
+              data={chartData[unitSystem]}
+              size={5}
+              style={{ 
+                data: { fill: "#c43a31" },
+                label: { fontSize: 16}
+              }}
+              labels={() => {}}
+              labelComponent={<VictoryTooltip/>}
+            />
+          </VictoryChart>
+        }
+      </div>
     </>
     
   )

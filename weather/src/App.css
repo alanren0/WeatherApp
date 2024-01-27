@@ -1,0 +1,48 @@
+body {
+  background-color: rgb(231, 231, 255);
+  padding:20px;
+}
+
+.buttons-container {
+  display: flex;
+  margin-left: 20px;
+}
+
+.info-container {
+  display: flex;
+  text-align: left;
+}
+
+.day-info-container {
+  display: flex;
+  
+}
+
+.forecast-info {
+  flex: 2 1 auto;
+  max-width: 800px;
+}
+
+.day-info {
+  margin: 10px
+}
+
+.graph {
+  height: 50%;
+  width: 800px
+}
+
+.date-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.background-panel {
+  background: white;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  min-width: 900px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
